@@ -19,7 +19,7 @@ def login():
 @app.route('/reset_password')
 def reset_password():
     # Render the password reset page
-    return render_template('reset_password.html')
+    return render_template('resetpassword.html')
 
 @app.route('/register')
 def register():
