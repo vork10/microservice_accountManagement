@@ -1,8 +1,6 @@
 from flask import render_template, request, redirect, url_for, session
 from app import app
 import pyrebase
-import firebase_admin
-from firebase_admin import auth, credentials
 
 config = {
     'apiKey': "AIzaSyAXyiq6xiCnaLbOcKCV23zVBO9Jc83zb94",
@@ -18,31 +16,39 @@ config = {
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
+app.secret_key = 'secret'
+
 @app.route('/')
 def login_page():
-    return render_template('loginpage.html')
+    return redirect(url_for('login'))
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-
     if ('user' in session):
-        return 'Hi, {}'.format(session['user']) 
+        return render_template('register.html')
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        
+        try:
+            user = auth.sign_in_with_email_and_password(email, password)
+            session['user'] = email
+            return render_template('loginpage.html')
+        except:
+            return render_template('loginpage.html', email=email, error_message="Wrong email or password")
+    else:
+        return render_template('loginpage.html')
 
-    email = request.form('email')
-    password = request.form('password')
-
-    try: 
-        user = auth.sign_in_with_email_and_password(email, password)
-        session['user'] = email
-
-    except Exception as e:
-        return e
-    
-    return redirect(url_for('dashboard'))
-
-@app.route('/reset_password')
+@app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
-    # Render the password reset page
+    if request.method == 'POST':
+        email = request.form['email']
+        
+        try:
+            auth.send_password_reset_email(email)
+            return render_template('loginpage.html', email=email, success_message="Email has been sent")
+        except:
+            return render_template('resetpassword.html', email=email, error_message="Something went wrong")
     return render_template('resetpassword.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -53,18 +59,27 @@ def register():
         confirm_password = request.form['confirm_password']
         
         if password != confirm_password:
-            return "Passwords do not match"
+            return render_template('register.html', email=email, error_message="Passwords not matching")
         
         try:
             user = auth.create_user_with_email_and_password(email, password)
-            
-            return redirect(url_for('login_page'))
-        except Exception as e:
-            return e
+            print('Successfully created an account')
+            user = auth.sign_in_with_email_and_password(email, password)
+            print('Successfully logged in')
+            session['user'] = email
+            return render_template('loginpage.html')
+        except:
+            return render_template('register.html', email=email, error_message="Email already exists")
+        
     else:
         return render_template('register.html')
 
+@app.route('/logout')
+def logout():
+    session.pop('user')
+    return redirect('/')
+
+
 @app.route('/dashboard')
 def dashboard():
-    # Render the dashboard page
     return render_template('dashboard.html')

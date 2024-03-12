@@ -13,11 +13,24 @@
     <div class="content-wrap">
         <div class="login-pane">
             <h1>Login</h1>
-            <form id="login-form" method="POST" action="{{ url_for('login') }}">
-                <input type="email" id="email" name="email" placeholder="Email" required><br>
-                <input type="password" id="password" name="password" placeholder="Password" required
-                    style="margin-bottom: 15%;"><br>
+            <form id="login-form" method="post" action="/">
+                <input type="email" id="email" name="email" placeholder="Email" required value="{{ email|default('') }}"><br>
+                <input type="password" id="password" name="password" placeholder="Password" required><br>
             </form>
+
+            {% if error_message %}
+            <div class="error-message" style="color: red; margin-bottom: 5%;">
+                {{ error_message }}
+            </div>
+            {% endif %}
+
+            {% if success_message %}
+            <div class="error-message" style="color: green; margin-bottom: 5%;">
+                {{ success_message }}
+            </div>
+            {% endif %}
+        
+
             <button id="login-button" type="submit">Log In</button>
             <div class="links">
                 <a href="{{ url_for('reset_password') }}">Forgot password?</a>
@@ -26,18 +39,17 @@
         </div>
     </div>
 
-
     <!--
     <footer class="footer-content">
         
     </footer>
     -->
-    <script src="loginpage.js"></script>
-    <script>
-        document.getElementById('login-button').addEventListener('click', function () {
-            document.getElementById('login-form').submit();
-        });
-    </script>
+    
 </body>
+<script>
+    document.getElementById('login-button').addEventListener('click', function () {
+        document.getElementById('login-form').submit();
+    });
+</script>
 
 </html>
