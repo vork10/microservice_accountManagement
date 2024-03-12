@@ -20,3 +20,15 @@ html:focus-within {
     --text: white;
     --link: #FED47E;
 }
+
+.content-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-content {
+    width: 100%;
+    height: 15%;
+    background-color: #101a2b;
+}

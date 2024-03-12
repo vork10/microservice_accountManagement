@@ -1,16 +1,14 @@
-
-
 body {
     display: flex;
     flex-direction: column;
-    background-image: url("../img/background-image.jpg");
+    background-image: url("../img/background-image3.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     min-height: 100vh;
 }
 
-.login-pane {
+.register-pane {
     background-color: var(--background);
     width: 420px;
     opacity: .95;
@@ -24,11 +22,11 @@ body {
     color: var(--text);
 }
 
-.login-pane h1 {
+.register-pane h1 {
     color: var(--text);
 }
 
-.login-pane form input {
+.register-pane form input {
     width: 100%;
     margin-bottom: 8%;
     height: 35px;
@@ -39,7 +37,7 @@ body {
     font-size: 15px;
 }
 
-.login-pane button {
+.register-pane button {
     position: relative; 
     overflow: hidden;
     width: 40%;
@@ -55,7 +53,7 @@ body {
     font-size: 1rem;
 }
 
-.login-pane button::before {
+.register-pane button::before {
     content: "";
     position: absolute;
     top: 0;
@@ -67,11 +65,11 @@ body {
     z-index: -1;
 }
 
-.login-pane button:hover::before {
+.register-pane button:hover::before {
     left: 0; 
 }
 
-.login-pane button:hover {
+.register-pane button:hover {
     color: var(--background);
 }
 
@@ -88,5 +86,3 @@ body {
 .links a:hover {
     color: #fde5b4;
 }
-
-
