@@ -44,13 +44,13 @@ body {
     border-radius: 5px;
     color: var(--text);
     font-size: 15px;
-    
 }
 
 .login-pane button {
     position: relative; /* Needed to position the pseudo-element */
     overflow: hidden; /* Ensures the pseudo-element doesn't extend outside the button */
-    padding: 2% 10%;
+    width: 40%;
+    padding: 2% 0;
     text-align: center;
     border-radius: 10px;
     border: 1px solid var(--link); /* Adjusted for visibility, replacing 'border-color' */
