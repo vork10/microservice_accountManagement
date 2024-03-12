@@ -10,8 +10,8 @@ app = Flask(__name__)
 app.template_folder = 'templates'
 app.static_folder = 'static'
 
+# Initialize Firebase Admin SDK
 try:
-    # Initialize Firebase Admin SDK
     cred = credentials.Certificate("erdyssa-default-rtdb-export.json")
     firebase_app = initialize_app(cred)
     # Get a reference to the Firestore database
