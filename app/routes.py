@@ -1,28 +1,49 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, session
 from app import app
-import firebase_admin.auth
+import pyrebase
+import firebase_admin
+from firebase_admin import auth, credentials
+
+config = {
+    'apiKey': "AIzaSyAXyiq6xiCnaLbOcKCV23zVBO9Jc83zb94",
+    'authDomain': "erdyssa.firebaseapp.com",
+    'databaseURL': "https://erdyssa-default-rtdb.europe-west1.firebasedatabase.app",
+    'projectId': "erdyssa",
+    'storageBucket': "erdyssa.appspot.com",
+    'messagingSenderId': "390029170184",
+    'appId': "1:390029170184:web:96edfc78b92014837d23bd",
+    'measurementId': "G-40WW2CVD40"
+}
+
+firebase = pyrebase.initialize_app(config)
+auth = firebase.auth()
+
+@app.route('/')
+def login_page():
+    return render_template('loginpage.html')
 
 @app.route('/login', methods=['POST'])
 def login():
-    # Handle user login logic here
-    email = request.form['email']
-    password = request.form['password']
 
-    # Add Firebase authentication logic here
-    try:
-        user = firebase_admin.auth.get_user_by_email(email)
-        # If user exists and password matches, redirect to dashboard
-        # Note: Implement appropriate Firebase Authentication method here
-        if custom_authenticate_user(email, password):
-            return redirect(url_for('dashboard'))
-        else:
-            return "Invalid email or password"  # Handle invalid credentials
-    except firebase_admin.auth.UserNotFoundError:
-        return "User not found"  # Handle user not found
-    except firebase_admin.auth.InvalidIdTokenError:
-        return "Invalid ID token"  # Handle invalid ID token
+    if ('user' in session):
+        return 'Hi, {}'.format(session['user']) 
+
+    email = request.form('email')
+    password = request.form('password')
+
+    try: 
+        user = auth.sign_in_with_email_and_password(email, password)
+        session['user'] = email
+
     except Exception as e:
-        return "Error: " + str(e)  # Handle other exceptions
+        return e
+    
+    return redirect(url_for('dashboard'))
+
+@app.route('/reset_password')
+def reset_password():
+    # Render the password reset page
+    return render_template('resetpassword.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -35,37 +56,15 @@ def register():
             return "Passwords do not match"
         
         try:
-            user = firebase_admin.auth.create_user(
-                email=email,
-                password=password
-            )
-            # Optionally, store additional user data in Firestore
-            # db_ref.collection('users').document(user.uid).set({ 'email': email })
+            user = auth.create_user_with_email_and_password(email, password)
             
             return redirect(url_for('login_page'))
         except Exception as e:
-            return "Error: " + str(e)
+            return e
     else:
         return render_template('register.html')
-
-# Helper function for custom authentication logic
-def custom_authenticate_user(email, password):
-    # Implement your custom authentication logic here
-    # For demonstration, just returning True if email and password match
-    # In a real-world scenario, you would typically hash the password and check against the stored hash
-    return True
-
 
 @app.route('/dashboard')
 def dashboard():
     # Render the dashboard page
     return render_template('dashboard.html')
-
-@app.route('/')
-def login_page():
-    return render_template('loginpage.html')
-
-@app.route('/reset_password')
-def reset_password():
-    # Render the password reset page
-    return render_template('resetpassword.html')
