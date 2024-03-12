@@ -13,12 +13,13 @@
     <div class="content-wrap">
         <div class="register-pane">
             <h1>Register</h1>
-            <form action="/register" method="post">
+            <form id="register-form" action="/register" method="post">
                 <input type="email" id="email" name="email" placeholder="Email" required><br>
                 <input type="password" id="password" name="password" placeholder="Password" required><br>
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required><br>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password"
+                    required><br>
             </form>
-            <button type="submit">Register</button>
+            <button id="register-button" type="submit">Register</button>
             <div class="links">
                 <a href="{{ url_for('login') }}">Already have an account? Log In</a>
             </div>
@@ -31,5 +32,10 @@
     </footer>
     -->
 </body>
+<script>
+    document.getElementById('register-button').addEventListener('click', function () {
+        document.getElementById('register-form').submit();
+    });
+</script>
 
 </html>

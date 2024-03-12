@@ -13,12 +13,12 @@
     <div class="content-wrap">
         <div class="login-pane">
             <h1>Login</h1>
-            <form method="POST" action="{{ url_for('login') }}">
+            <form id="login-form" method="POST" action="{{ url_for('login') }}">
                 <input type="email" id="email" name="email" placeholder="Email" required><br>
                 <input type="password" id="password" name="password" placeholder="Password" required
                     style="margin-bottom: 15%;"><br>
             </form>
-            <button type="submit">Log In</button>
+            <button id="login-button" type="submit">Log In</button>
             <div class="links">
                 <a href="{{ url_for('reset_password') }}">Forgot password?</a>
                 <a href="{{ url_for('register') }}" style="margin-top: 10%;">Create an account</a>
@@ -33,6 +33,11 @@
     </footer>
     -->
     <script src="loginpage.js"></script>
+    <script>
+        document.getElementById('login-button').addEventListener('click', function () {
+            document.getElementById('login-form').submit();
+        });
+    </script>
 </body>
 
 </html>
