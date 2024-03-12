@@ -32,7 +32,6 @@ body {
 
 .login-pane h1 {
     color: var(--text);
-    text-decoration: underline;
 }
 
 .login-pane form input {
