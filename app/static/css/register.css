@@ -1,0 +1,88 @@
+body {
+    display: flex;
+    flex-direction: column;
+    background-image: url("../img/background-image3.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+.register-pane {
+    background-color: var(--background);
+    width: 420px;
+    opacity: .95;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 10%;
+    border-radius: 20px;
+    color: var(--text);
+}
+
+.register-pane h1 {
+    color: var(--text);
+}
+
+.register-pane form input {
+    width: 100%;
+    margin-bottom: 8%;
+    height: 35px;
+    background-color: var(--background);
+    border: 1px solid var(--text);
+    border-radius: 5px;
+    color: var(--text);
+    font-size: 15px;
+}
+
+.register-pane button {
+    position: relative; 
+    overflow: hidden;
+    width: 40%;
+    padding: 2% 0;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid var(--link);
+    background-color: var(--background);
+    color: var(--link);
+    cursor: pointer;
+    transition: color 0.8s ease; 
+    z-index: 1;
+    font-size: 1rem;
+}
+
+.register-pane button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: var(--link); 
+    transition: left 0.8s ease; 
+    z-index: -1;
+}
+
+.register-pane button:hover::before {
+    left: 0; 
+}
+
+.register-pane button:hover {
+    color: var(--background);
+}
+
+.links {
+    margin: 10% 0;
+}
+
+.links a {
+    color: var(--link);
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.links a:hover {
+    color: #fde5b4;
+}
