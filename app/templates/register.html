@@ -14,11 +14,18 @@
         <div class="register-pane">
             <h1>Register</h1>
             <form id="register-form" action="/register" method="post">
-                <input type="email" id="email" name="email" placeholder="Email" required><br>
+                <input type="email" id="email" name="email" placeholder="Email" required value="{{ email|default('') }}"><br>
                 <input type="password" id="password" name="password" placeholder="Password" required><br>
                 <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password"
                     required><br>
             </form>
+
+            {% if error_message %}
+            <div class="error-message" style="color: red; margin-bottom: 5%;">
+                {{ error_message }}
+            </div>
+            {% endif %}
+
             <button id="register-button" type="submit">Register</button>
             <div class="links">
                 <a href="/">Already have an account? Log In</a>
