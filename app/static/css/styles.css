@@ -1,0 +1,21 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+
+:root {
+    --background: #0c131f;
+    --text: white;
+    --link: #FED47E;
+}
