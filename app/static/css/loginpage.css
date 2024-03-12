@@ -1,0 +1,103 @@
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-image: url("../img/background-image.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+.content-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-pane {
+    background-color: var(--background);
+    width: 420px;
+    opacity: .95;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 10%;
+    border-radius: 20px;
+    color: var(--text);
+}
+
+.login-pane h1 {
+    color: var(--text);
+}
+
+.login-pane form input {
+    width: 100%;
+    margin-bottom: 8%;
+    height: 35px;
+    background-color: var(--background);
+    border: 1px solid var(--text);
+    border-radius: 5px;
+    color: var(--text);
+    font-size: 15px;
+}
+
+.login-pane button {
+    position: relative; /* Needed to position the pseudo-element */
+    overflow: hidden; /* Ensures the pseudo-element doesn't extend outside the button */
+    width: 40%;
+    padding: 2% 0;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid var(--link); /* Adjusted for visibility, replacing 'border-color' */
+    background-color: var(--background);
+    color: var(--link);
+    cursor: pointer;
+    transition: color 0.8s ease; /* Transition for text color or other properties */
+    z-index: 1; /* Ensure button content is above pseudo-element */
+    font-size: 1rem;
+}
+
+.login-pane button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%; /* Start from the left, outside of the button */
+    width: 100%;
+    height: 100%;
+    background-color: var(--link); /* New background color */
+    transition: left 0.8s ease; /* Transition moving the pseudo-element to the right */
+    z-index: -1; /* Place pseudo-element below the button content */
+}
+
+.login-pane button:hover::before {
+    left: 0; /* Move the pseudo-element to cover the button on hover */
+}
+
+.login-pane button:hover {
+    color: var(--background); /* Optional: Change text color on hover to ensure visibility */
+}
+
+.links {
+    margin: 10% 0;
+}
+
+.links a {
+    color: var(--link);
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.links a:hover {
+    color: #fde5b4;
+}
+
+
+.footer-content {
+    width: 100%;
+    height: 15%;
+    background-color: #101a2b; /* Your desired footer background color */
+}
