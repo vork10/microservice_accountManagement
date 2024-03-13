@@ -25,7 +25,7 @@ def login_page():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if ('user' in session):
-        return render_template('register.html')
+        return render_template('dashboard.html', user = format(session['user']))
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -33,7 +33,7 @@ def login():
         try:
             user = auth.sign_in_with_email_and_password(email, password)
             session['user'] = email
-            return render_template('loginpage.html')
+            return render_template('dashboard.html', user = format(session['user']))
         except:
             return render_template('loginpage.html', email=email, error_message="Wrong email or password")
     else:
@@ -74,7 +74,7 @@ def register():
     else:
         return render_template('register.html')
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     session.pop('user')
     return redirect('/')

@@ -1,0 +1,8 @@
+body {
+    background-color: var(--background);
+}
+
+h1 {
+    text-align: center;
+    color: var(--text);
+}
