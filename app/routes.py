@@ -29,6 +29,14 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
+
+        if not email and not password:
+            print('neger')
+            return render_template('loginpage.html', error_message="Please enter your email and password")
+        elif not email:
+            return render_template('loginpage.html', error_message="Please enter your email")
+        elif not password:
+            return render_template('loginpage.html', email=email, error_message="Please enter your password")
         
         try:
             user = auth.sign_in_with_email_and_password(email, password)
