@@ -1,1 +1,5 @@
 flask
+pyrebase4
+firebase-admin
+webdriver-manager
+setup-toolspip
