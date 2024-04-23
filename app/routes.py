@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for, session
 from app import app
+import json
 from app.scripts.communicator import Communicator
 import pyrebase
 
@@ -99,5 +100,13 @@ def dashboard():
     user_id = auth.current_user['localId']
 
     apidata = Communicator.get_data(communicator, f"https://localhost:7124/api/data/{user_id}")
+
+        # First parse the outer JSON to get a list of stringified JSONs
+    stringified_json_objects = json.loads(apidata)
+
+    # Now parse each stringified JSON into a dictionary
+    characters = [json.loads(obj) for obj in stringified_json_objects]
+
+
     user = session['user']
-    return render_template('dashboard.html', user=user, apidata=apidata)
+    return render_template('dashboard.html', user=user, characters=characters)

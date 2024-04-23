@@ -14,8 +14,10 @@
     <h1>Welcome, {{ user }}</h1>
     {% endif %}
 
-    {% if apidata %}
-    <h1>{{ apidata }}</h1>
+    {% if characters %}
+    {% for character in characters %}
+    <h1>{{ character }}</h1>
+    {% endfor %}
     {% endif %}
 
     <form action="/logout" method="post">
