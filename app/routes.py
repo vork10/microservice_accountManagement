@@ -28,14 +28,13 @@ def login_page():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if 'user' in session:
-        return redirect(url_for('dashboard'))
+    #if 'user' in session:
+         # return redirect(url_for('dashboard'))
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
 
         if not email and not password:
-            print('neger')
             return render_template('loginpage.html', error_message="Please enter your email and password")
         elif not email:
             return render_template('loginpage.html', error_message="Please enter your email")
@@ -97,7 +96,8 @@ def dashboard():
     if 'user' not in session:
         return redirect(url_for('login'))
     
-    apidata = Communicator.get_data(communicator, "https://localhost:7124/api/data")
+    user_id = auth.current_user['localId']
+
+    apidata = Communicator.get_data(communicator, f"https://localhost:7124/api/data/{user_id}")
     user = session['user']
     return render_template('dashboard.html', user=user, apidata=apidata)
-
