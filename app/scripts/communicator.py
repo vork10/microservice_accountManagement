@@ -4,6 +4,7 @@ class Communicator:
     def __init__(self):
         # Initialize session, set base URL or headers if needed
         self.session = requests.Session()
+        self.session.verify = False  # Disable SSL certificate verification
 
     def get_data(self, url):
         """Get data from the specified URL."""

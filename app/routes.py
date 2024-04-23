@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for, session
 from app import app
+from app.scripts.communicator import Communicator
 import pyrebase
 
 config = {
@@ -16,6 +17,9 @@ config = {
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
+communicator = Communicator()
+
+
 app.secret_key = 'secret'
 
 @app.route('/')
@@ -24,8 +28,8 @@ def login_page():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if ('user' in session):
-        return render_template('dashboard.html', user = format(session['user']))
+    if 'user' in session:
+        return redirect(url_for('dashboard'))
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -40,8 +44,8 @@ def login():
         
         try:
             user = auth.sign_in_with_email_and_password(email, password)
-            session['user'] = email
-            return render_template('dashboard.html', user = format(session['user']))
+            session['user'] = email  # Store user email in session
+            return redirect(url_for('dashboard'))
         except:
             return render_template('loginpage.html', email=email, error_message="Wrong email or password")
     else:
@@ -90,4 +94,10 @@ def logout():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    apidata = Communicator.get_data(communicator, "https://localhost:7124/api/data")
+    user = session['user']
+    return render_template('dashboard.html', user=user, apidata=apidata)
+
