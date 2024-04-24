@@ -22,15 +22,18 @@ communicator = Communicator()
 
 
 app.secret_key = 'secret'
+unityrequest = False
 
 @app.route('/')
 def login_page():
+    global unityrequest
+    source = request.args.get('source')
+    if source == 'unity':
+        unityrequest = True
     return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    #if 'user' in session:
-         # return redirect(url_for('dashboard'))
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -94,19 +97,34 @@ def logout():
 
 @app.route('/dashboard')
 def dashboard():
+    global unityrequest
     if 'user' not in session:
         return redirect(url_for('login'))
     
+
+
     user_id = auth.current_user['localId']
+    characters = ""
+    
+    try:
+        
+        characterapidata = Communicator.get_data(communicator, f"https://localhost:7124/api/data/{user_id}")
 
-    apidata = Communicator.get_data(communicator, f"https://localhost:7124/api/data/{user_id}")
+            # First parse the outer JSON to get a list of stringified JSONs
+        stringified_json_objects = json.loads(characterapidata)
 
-        # First parse the outer JSON to get a list of stringified JSONs
-    stringified_json_objects = json.loads(apidata)
-
-    # Now parse each stringified JSON into a dictionary
-    characters = [json.loads(obj) for obj in stringified_json_objects]
-
-
+        # Now parse each stringified JSON into a dictionary
+        characters = [json.loads(obj) for obj in stringified_json_objects]
+    except:
+        pass
+        
     user = session['user']
+
+
+
+    if unityrequest == True:
+        Communicator.post_data(communicator, "https://localhost:7125/account/api/data/", user_id)
+        
+
+
     return render_template('dashboard.html', user=user, characters=characters)
