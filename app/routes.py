@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, session
+from flask import render_template, request, redirect, url_for, session, jsonify
 from app import app
 import json
 from app.scripts.communicator import Communicator
@@ -34,6 +34,7 @@ def login_page():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    global unityrequest
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -47,8 +48,12 @@ def login():
         
         try:
             user = auth.sign_in_with_email_and_password(email, password)
-            session['user'] = email  # Store user email in session
-            return redirect(url_for('dashboard'))
+            # session['user'] = email 
+            if unityrequest == True:
+                unityrequest = False
+                return redirect(url_for('unity_data'))
+            else:
+                return redirect(url_for('dashboard'))     
         except:
             return render_template('loginpage.html', email=email, error_message="Wrong email or password")
     else:
@@ -91,23 +96,19 @@ def register():
 
 @app.route('/logout', methods=['POST'])
 def logout():
-    session.pop('user')
+    # session.pop('user')
     return redirect('/')
 
 
 @app.route('/dashboard')
 def dashboard():
-    global unityrequest
-    if 'user' not in session:
-        return redirect(url_for('login'))
+    # if 'user' not in session:
+    #    return redirect(url_for('login'))
     
-
-
     user_id = auth.current_user['localId']
     characters = ""
     
     try:
-        
         characterapidata = Communicator.get_data(communicator, f"https://localhost:7124/api/data/{user_id}")
 
             # First parse the outer JSON to get a list of stringified JSONs
@@ -120,11 +121,12 @@ def dashboard():
         
     user = session['user']
 
-
-
-    if unityrequest == True:
-        Communicator.post_data(communicator, "https://localhost:7125/account/api/data/", user_id)
-        
-
-
     return render_template('dashboard.html', user=user, characters=characters)
+
+@app.route('/unity_data', methods=['GET'])
+def unity_data():
+    try:
+        user_id = auth.current_user['localId']
+        return jsonify({'user_id': user_id})
+    except Exception as e:
+        return jsonify({'error': 'Error processing request: ' + str(e)}), 500
