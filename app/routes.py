@@ -48,7 +48,7 @@ def login():
         
         try:
             user = auth.sign_in_with_email_and_password(email, password)
-            # session['user'] = email 
+            session['user'] = email 
             if unityrequest == True:
                 unityrequest = False
                 return redirect(url_for('unity_data'))
