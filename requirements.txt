@@ -2,4 +2,4 @@ flask
 pyrebase4
 firebase-admin
 webdriver-manager
-setup-toolspip
+gunicorn==20.0.4
