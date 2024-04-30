@@ -109,7 +109,7 @@ def dashboard():
     characters = ""
     
     try:
-        characterapidata = Communicator.get_data(communicator, f"https://localhost:7124/api/data/{user_id}")
+        characterapidata = Communicator.get_data(communicator, f"http://44.220.151.108/api/data/{user_id}")
 
             # First parse the outer JSON to get a list of stringified JSONs
         stringified_json_objects = json.loads(characterapidata)
