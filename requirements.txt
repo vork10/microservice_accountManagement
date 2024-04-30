@@ -2,3 +2,4 @@ flask
 pyrebase4
 firebase-admin
 webdriver-manager
+gunicorn==20.0.4
