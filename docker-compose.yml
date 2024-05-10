@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: gunicorn '-w 4' -b 0.0.0.0:5000 run:app
+    command: gunicorn '-w' '4' '-b' '0.0.0.0:5000' '--log-config' 'logging.conf' 'run:app'
     environment:
       - FIREBASE_API_KEY=AIzaSyAXyiq6xiCnaLbOcKCV23zVBO9Jc83zb94
       - FIREBASE_AUTH_DOMAIN=erdyssa.firebaseapp.com
