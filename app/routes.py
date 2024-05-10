@@ -132,7 +132,7 @@ def logout():
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     print("Entering the dashboard route", flush=True)
-    logger.debug("Entering the dashboard route")
+    app.logger.info("Entering the dashboard route")
     user = session.get('user')
     user_id = session.get('user_id')
 
