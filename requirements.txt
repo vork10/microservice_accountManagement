@@ -1,5 +1,4 @@
-flask
-pyrebase4
-firebase-admin
-webdriver-manager
+Flask==3.0.3
+Pyrebase4==4.8.0
+Requests==2.31
 gunicorn==20.0.4

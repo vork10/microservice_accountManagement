@@ -3,16 +3,17 @@ from app import app
 import json
 from app.scripts.communicator import Communicator
 import pyrebase
+import os
 
 config = {
-    'apiKey': "AIzaSyAXyiq6xiCnaLbOcKCV23zVBO9Jc83zb94",
-    'authDomain': "erdyssa.firebaseapp.com",
-    'databaseURL': "https://erdyssa-default-rtdb.europe-west1.firebasedatabase.app",
-    'projectId': "erdyssa",
-    'storageBucket': "erdyssa.appspot.com",
-    'messagingSenderId': "390029170184",
-    'appId': "1:390029170184:web:96edfc78b92014837d23bd",
-    'measurementId': "G-40WW2CVD40"
+    'apiKey': os.getenv('FIREBASE_API_KEY'),
+    'authDomain': os.getenv('FIREBASE_AUTH_DOMAIN'),
+    'databaseURL': os.getenv('FIREBASE_DB_URL'),
+    'projectId': os.getenv('FIREBASE_PROJECT_ID'),
+    'storageBucket': os.getenv('FIREBASE_BUCKET_NAME'),
+    'messagingSenderId': os.getenv('FIREBASE_MESSAGING_SENDER_ID'),
+    'appId': os.getenv('FIREBASE_APP_ID'),
+    'measurementId': os.getenv('FIREBASE_MEASUREMENT_ID')
 }
 
 firebase = pyrebase.initialize_app(config)
@@ -20,8 +21,7 @@ auth = firebase.auth()
 
 communicator = Communicator()
 
-
-app.secret_key = 'secret'
+app.secret_key = os.getenv('SECRET_KEY')
 unityrequest = False
 
 @app.route('/')
