@@ -140,20 +140,15 @@ def dashboard():
         logger.warning('No user session found. Redirecting to login.')
         print("No user session found. Redirecting to login.", flush=True)
         return redirect(url_for('login'))
+    
+    logger.debug(f"Authenticated user ID: {user_id}")
+    print(f"Authenticated user ID: {user_id}", flush=True)
+    characterapidata = Communicator.get_data(communicator, f"http://13.60.46.33/api/data/{user_id}")
 
-    try:
-        logger.debug(f"Authenticated user ID: {user_id}")
-        print(f"Authenticated user ID: {user_id}", flush=True)
-        characterapidata = Communicator.get_data(communicator, f"http://13.60.46.33/api/data/{user_id}")
-
-        stringified_json_objects = json.loads(characterapidata)
-        characters = [json.loads(obj) for obj in stringified_json_objects]
-        logger.debug(f"Characters data for user ID {user_id}: {characters}")
-        print(f"Characters data for user ID {user_id}: {characters}", flush=True)
-    except Exception as e:
-        logger.error(f"Error fetching characters data: {e}", exc_info=True)
-        print(f"Error fetching characters data: {e}", flush=True)
-        characters = []
+    stringified_json_objects = json.loads(characterapidata)
+    characters = [json.loads(obj) for obj in stringified_json_objects]
+    logger.debug(f"Characters data for user ID {user_id}: {characters}")
+    print(f"Characters data for user ID {user_id}: {characters}", flush=True)
 
     logger.info(f"Rendering dashboard for user {user} with characters data")
     print(f"Rendering dashboard for user {user} with characters data", flush=True)
