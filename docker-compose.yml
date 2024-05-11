@@ -31,7 +31,6 @@ services:
       - app-net
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./app/static:app/static
     depends_on:
       - app
 networks:
