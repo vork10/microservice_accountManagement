@@ -12,14 +12,14 @@ def client():
 def test_register_and_login(client):
     # Firebase configuration
     config = {
-        'apiKey': os.getenv('AIzaSyAXyiq6xiCnaLbOcKCV23zVBO9Jc83zb94'),
-        'authDomain': os.getenv('erdyssa.firebaseapp.com'),
-        'databaseURL': os.getenv('https://erdyssa-default-rtdb.europe-west1.firebasedatabase.app'),
-        'projectId': os.getenv('erdyssa'),
-        'storageBucket': os.getenv('erdyssa.appspot.com'),
-        'messagingSenderId': os.getenv('390029170184'),
-        'appId': os.getenv('390029170184:web:96edfc78b92014837d23bd'),
-        'measurementId': os.getenv('G-40WW2CVD40')
+        'apiKey': 'AIzaSyAXyiq6xiCnaLbOcKCV23zVBO9Jc83zb94',
+        'authDomain': 'erdyssa.firebaseapp.com',
+        'databaseURL':'https://erdyssa-default-rtdb.europe-west1.firebasedatabase.app',
+        'projectId': 'erdyssa',
+        'storageBucket': 'erdyssa.appspot.com',
+        'messagingSenderId': '390029170184',
+        'appId': '390029170184:web:96edfc78b92014837d23bd',
+        'measurementId': 'G-40WW2CVD40'
     }
 
     firebase = pyrebase.initialize_app(config)
@@ -28,14 +28,23 @@ def test_register_and_login(client):
     # Test credentials
     test_email = "testuser@example.com"
     test_password = "test_password"
-    
-    # Register the user
+
+
+    user = None
     try:
-        user = auth.create_user_with_email_and_password(test_email, test_password)
-        assert user is not None
-        print("User registration successful.")
-    except Exception as e:
-        pytest.fail(f"User registration failed: {e}")
+        user = auth.sign_in_with_email_and_password(test_email, test_password)
+        print("User already exists. Skipping registration.")
+    except:
+        pass
+    # Register the user
+
+    if user is None:
+        try:
+            user = auth.create_user_with_email_and_password(test_email, test_password)
+            assert user is not None
+            print("User registration successful.")
+        except Exception as e:
+            pytest.fail(f"User registration failed: {e}")
     
     # Authenticate the user
     try:
