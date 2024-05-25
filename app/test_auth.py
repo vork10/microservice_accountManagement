@@ -12,14 +12,14 @@ def client():
 def test_register_and_login(client):
     # Firebase configuration
     config = {
-        'apiKey': os.getenv('FIREBASE_API_KEY'),
-        'authDomain': os.getenv('FIREBASE_AUTH_DOMAIN'),
-        'databaseURL': os.getenv('FIREBASE_DB_URL'),
-        'projectId': os.getenv('FIREBASE_PROJECT_ID'),
-        'storageBucket': os.getenv('FIREBASE_BUCKET_NAME'),
-        'messagingSenderId': os.getenv('FIREBASE_MESSAGING_SENDER_ID'),
-        'appId': os.getenv('FIREBASE_APP_ID'),
-        'measurementId': os.getenv('FIREBASE_MEASUREMENT_ID')
+        'apiKey': os.getenv('AIzaSyAXyiq6xiCnaLbOcKCV23zVBO9Jc83zb94'),
+        'authDomain': os.getenv('erdyssa.firebaseapp.com'),
+        'databaseURL': os.getenv('https://erdyssa-default-rtdb.europe-west1.firebasedatabase.app'),
+        'projectId': os.getenv('erdyssa'),
+        'storageBucket': os.getenv('erdyssa.appspot.com'),
+        'messagingSenderId': os.getenv('390029170184'),
+        'appId': os.getenv('390029170184:web:96edfc78b92014837d23bd'),
+        'measurementId': os.getenv('G-40WW2CVD40')
     }
 
     firebase = pyrebase.initialize_app(config)
