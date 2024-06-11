@@ -63,14 +63,11 @@ def login():
             user_id = auth.get_account_info(user['idToken'])['users'][0]['localId']
             session['user'] = email
             session['user_id'] = user_id
-            logger.info(f"Successfully logged in: {email}")
-            logger.debug(f"User ID for {email}: {user_id}")
-            print(f"User ID for {email}: {user_id}", flush=True)
+            logger.info(f"Successfully logged in. : {email}")
             if unityrequest:
                 unityrequest = False
                 return redirect(url_for('unity_data'))
             else:
-                logger.debug("nigger")
                 return redirect(url_for('dashboard'))
         except Exception as e:
             logger.error(f"Login failed for {email}: {e}", exc_info=True)
@@ -82,11 +79,9 @@ def login():
 def reset_password():
     if request.method == 'POST':
         email = request.form['email']
-        logger.debug(f"Password reset request for email: {email}")
 
         try:
             auth.send_password_reset_email(email)
-            logger.info(f"Password reset email sent to {email}")
             return render_template('loginpage.html', email=email, success_message="Email has been sent")
         except Exception as e:
             logger.error(f"Error sending password reset email to {email}: {e}", exc_info=True)
@@ -100,10 +95,7 @@ def register():
         password = request.form['password']
         confirm_password = request.form['confirm_password']
 
-        logger.debug(f"Registration attempt with email: {email}")
-
         if password != confirm_password:
-            logger.warning(f"Passwords do not match for {email}")
             return render_template('register.html', email=email, error_message="Passwords not matching")
 
         try:
@@ -113,11 +105,8 @@ def register():
             user = auth.sign_in_with_email_and_password(email, password)
             session['user'] = email
             session['user_id'] = user_id
-            logger.debug(f"User ID for {email}: {user_id}")
-            print(f"User ID for {email}: {user_id}", flush=True)
             return render_template('loginpage.html')
         except Exception as e:
-            logger.error(f"Error creating account for {email}: {e}", exc_info=True)
             return render_template('register.html', email=email, error_message="Email already exists")
     else:
         return render_template('register.html')
@@ -131,27 +120,17 @@ def logout():
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
-    print("Entering the dashboard route", flush=True)
-    app.logger.info("Entering the dashboard route")
     user = session.get('user')
     user_id = session.get('user_id')
 
     if not user or not user_id:
-        logger.warning('No user session found. Redirecting to login.')
-        print("No user session found. Redirecting to login.", flush=True)
         return redirect(url_for('login'))
     
-    logger.debug(f"Authenticated user ID: {user_id}")
-    print(f"Authenticated user ID: {user_id}", flush=True)
     characterapidata = Communicator.get_data(communicator, f"http://13.60.46.33/api/data/{user_id}")
 
     stringified_json_objects = json.loads(characterapidata)
     characters = [json.loads(obj) for obj in stringified_json_objects]
-    logger.debug(f"Characters data for user ID {user_id}: {characters}")
-    print(f"Characters data for user ID {user_id}: {characters}", flush=True)
 
-    logger.info(f"Rendering dashboard for user {user} with characters data")
-    print(f"Rendering dashboard for user {user} with characters data", flush=True)
     return render_template('dashboard.html', user=user, characters=characters)
 
 @app.route('/unity_data', methods=['GET'])
@@ -161,9 +140,7 @@ def unity_data():
         if not user_id:
             raise Exception('User ID not found in session')
         logger.debug(f"Unity data request for user ID: {user_id}")
-        print(f"Unity data request for user ID: {user_id}", flush=True)
         return jsonify({'user_id': user_id})
     except Exception as e:
         logger.error(f"Error processing unity data request: {e}", exc_info=True)
-        print(f"Error processing unity data request: {e}", flush=True)
         return jsonify({'error': 'Error processing request: ' + str(e)}), 500
