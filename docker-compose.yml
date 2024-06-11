@@ -2,7 +2,24 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: gunicorn '-w' '4' '-b' '0.0.0.0:5000' 'run:app'
+    networks:
+      - app-net 
+    environment:
+      - FIREBASE_API_KEY=AIzaSyAXyiq6xiCnaLbOcKCV23zVBO9Jc83zb94
+      - FIREBASE_AUTH_DOMAIN=erdyssa.firebaseapp.com
+      - FIREBASE_DB_URL=https://erdyssa-default-rtdb.europe-west1.firebasedatabase.app
+      - FIREBASE_PROJECT_ID=erdyssa
+      - FIREBASE_BUCKET_NAME=erdyssa.appspot.com
+      - FIREBASE_MESSAGING_SENDER_ID=390029170184
+      - FIREBASE_APP_ID=1:390029170184:web:96edfc78b92014837d23bd
+      - FIREBASE_MEASUREMENT_ID=G-40WW2CVD40
+      - SECRET_KEY=your-secure-secret-key
+    ports:
+      - "5000:5000"
     expose:
       - "5000"
 
@@ -10,7 +27,12 @@ services:
     image: nginx:latest
     ports:
       - "80:80"
+    networks:
+      - app-net
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - app
+networks:
+  app-net:
+    driver: bridge

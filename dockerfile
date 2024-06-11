@@ -1,14 +1,14 @@
-FROM python:3.8-slim
+FROM python:3.9
+
+RUN apt-get update && apt-get install -y iputils-ping curl
 
 WORKDIR /app
 
-COPY . /app
-
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install gunicorn
+
+COPY . /app
 
 EXPOSE 5000
 
-ENV NAME World
-
-CMD ["gunicorn", "-w 4", "-b", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "run:app"]
