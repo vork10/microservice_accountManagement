@@ -96,25 +96,19 @@ def register():
 
 @app.route('/logout', methods=['POST'])
 def logout():
-    # session.pop('user')
     return redirect('/')
 
 
 @app.route('/dashboard')
 def dashboard():
-    # if 'user' not in session:
-    #    return redirect(url_for('login'))
-    
     user_id = auth.current_user['localId']
     characters = ""
     
     try:
         characterapidata = Communicator.get_data(communicator, f"http://44.220.151.108/api/data/{user_id}")
 
-            # First parse the outer JSON to get a list of stringified JSONs
         stringified_json_objects = json.loads(characterapidata)
 
-        # Now parse each stringified JSON into a dictionary
         characters = [json.loads(obj) for obj in stringified_json_objects]
     except:
         pass
